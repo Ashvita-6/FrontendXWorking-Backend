@@ -8,7 +8,8 @@ const app = express();
 
 const PORT = process.env.PORT || 3001;
 app.use(cors()); 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true })); // Good practice to add this too
 
 const PAGESPEED_API_KEY = process.env.PAGESPEED_API_KEY;
 const PAGESPEED_ENDPOINT = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
@@ -116,8 +117,9 @@ Here is the data:
 ${JSON.stringify(llmInfo, null, 2)}`;
 
         // 3. Get the analysis from Groq
+        console.log("--- ABOUT TO CALL GROQ WITH MODEL: llama3-70b-8192");
         const chatCompletion = await groq.chat.completions.create({
-            model: "llama3-8b-8192",
+            model: "llama-3.1-8b-instant",
             messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: userPrompt }
