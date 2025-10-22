@@ -141,9 +141,11 @@ ${JSON.stringify(llmInfo, null, 2)}`;
 
 
 // Start the server for local development
-if (process.env.NODE_ENV !== 'production') {
-    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-}
+// This tells the server to start and listen for requests.
+// Render will inject its own PORT, which we already assigned to the PORT constant.
+// We listen on '0.0.0.0' to accept connections from Render's network.
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`);
+});
 
-
-export default app; 
+export default app;
